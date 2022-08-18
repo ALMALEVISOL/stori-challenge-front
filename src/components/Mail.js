@@ -8,7 +8,6 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export const Mail = (props) => {
-  const { setIsLoading } = props;
   const drawerWidth = 240;
   const [htmlContent, setHtmlContent] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -100,6 +99,8 @@ export const Mail = (props) => {
             ))}
           </div>
         </section>
+        <div  style={{ display: "flex", justifyContent: "space-between" }} >
+        <p> {"Hint: You can write this text and the system will replace with the full name of every user: ${name}"} </p>
         <Button
           variant="contained"
           onClick={sendData}
@@ -107,6 +108,7 @@ export const Mail = (props) => {
         >
           Send email
         </Button>
+        </div>
         <TextareaAutosize
           aria-label="empty textarea"
           placeholder="Paste your HTML template"

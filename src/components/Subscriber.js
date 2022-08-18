@@ -57,7 +57,9 @@ export const Subscriber = (props) => {
   }, []);
 
   const fetchData = () => {
-    fetch("https://us-central1-almalevisol.cloudfunctions.net/app/api/v1/brands")
+    fetch(
+      "https://us-central1-almalevisol.cloudfunctions.net/app/api/v1/brands"
+    )
       .then((res) => res.json())
       .then((res) => {
         setBrands(
@@ -72,10 +74,12 @@ export const Subscriber = (props) => {
   };
 
   const fetchSubscribers = () => {
-    fetch("https://us-central1-almalevisol.cloudfunctions.net/app/api/v1/subscribers")
+    fetch(
+      "https://us-central1-almalevisol.cloudfunctions.net/app/api/v1/subscribers"
+    )
       .then((res) => res.json())
       .then((res) => {
-        setSubscribers(res)
+        setSubscribers(res);
         setIsLoading(false);
       });
   };
@@ -91,16 +95,19 @@ export const Subscriber = (props) => {
       return;
     }
     setIsLoading(true);
-    fetch("https://us-central1-almalevisol.cloudfunctions.net/app/api/v1/subscribers", {
-      method: "POST",
-      body: sendMany
-        ? JSON.stringify([
-            { email: "a@gmail.com", name: "A" },
-            { email: "b@gmail.com", name: "B" },
-          ])
-        : JSON.stringify({ email, name: fullName }),
-      headers: { "Content-Type": "application/json" },
-    })
+    const many = usersArray
+      .split(",")
+      .map((user) => ({ email: user, name: user.split("@")[0] }));
+    fetch(
+      "https://us-central1-almalevisol.cloudfunctions.net/app/api/v1/subscribers",
+      {
+        method: "POST",
+        body: sendMany
+          ? JSON.stringify(many)
+          : JSON.stringify({ email, name: fullName }),
+        headers: { "Content-Type": "application/json" },
+      }
+    )
       .then((res) => res.json())
       .then((res) => {
         if (res && res["name"] && res["name"] === "ValidationError") {
@@ -162,7 +169,7 @@ export const Subscriber = (props) => {
           options={brands}
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} label="Brand" />}
-          onChange={ () => fetchSubscribers() }
+          onChange={() => fetchSubscribers()}
         />
 
         <section
